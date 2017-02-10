@@ -16,6 +16,11 @@ from myrules import myrules
 
 rules_file_path = sys.argv[4]
 
+print('Input Path: ' + input_file_path)
+print('Output Path: ' + output_file_path)
+print('Rules Library: ' + rules_lib_path)
+print('Rules Path: ' + rules_file_path)
+
 # Possible to use for collecting available methods from a class
 # methods_available = inspect.getmembers(myrules)
 
