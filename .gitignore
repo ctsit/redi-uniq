@@ -1,0 +1,6 @@
+# Python Related Files to Exclude
+*.pyc
+
+# RED-I Uniq Related Files
+.last_uniq_config
+samples/
