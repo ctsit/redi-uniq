@@ -33,7 +33,7 @@ then
 	fi
 
     echo "Attempting ${RUN_TYPE} run in [${PROJECT_ROOT}]"
-	if [ ! -z ${UNIQUE_FILE} ] && [ ! -z ${PROJECT_ROOT} ] && [ ! -z ${USER_DATA_DIRECTORY} ] && [ ! -z ${CURRENT_RUN_FILE} ];
+	if [ ! -z ${UNIQUE_FILE} ] && [ ! -z ${PROJECT_ROOT} ] && [ ! -z ${USER_DATA_DIRECTORY} ] && [ ! -z ${CURRENT_RUN_FILE} ] && [ ! -z ${REDI_SCRIPT} ];
 	then
 
 		if [ -z ${USER_DATA_DIRECTORY} ];
@@ -69,15 +69,20 @@ then
                 echo -e "Copy the user's data file over the root raw file to keep the preprocs in line"
                 cp ${USER_DATA_DIRECTORY}/${id}.txt ${RAW_FILE}
 
-                # Run RED-I from it's virtualenv location
-    			/home/redi/prod/redi_0_15_4/bin/redi -c ${PROJECT_ROOT} -k -f ${USER_DATA_DIRECTORY}/${id}.txt --datadir ${USER_DATA_DIRECTORY}/${id}/ --skip-blanks ${DRY_RUN_FLAG} > ${INDIVIDUAL_RUN_LOG} 2>&1
+                if [ -f ${REDI_SCRIPT} ];
+                then
+                    # Run RED-I from it's virtualenv location
+                    source ${REDI_SCRIPT}
+                else
+                    echo "Could not find your redi script specified in your uniq.ini file [${REDI_SCRIPT}]"
+                fi
     		done
     		popd
         else
             echo "No such directory [${PROJECT_ROOT}]"
         fi
 	else
-		echo "Your run was not configured properly, did you even look at your local config.ini file?"
+		echo "Your run was not configured properly, did you even look at your local uniq.ini file? Check the following variables UNIQUE_FILE, PROJECT_ROOT, USER_DATA_DIRECTORY, CURRENT_RUN_FILE, or REDI_SCRIPT"
 	fi
 else
 	echo "You should probably verify that settings.ini does not point to a PROD server unless you mean to!"
