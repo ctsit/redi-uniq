@@ -19,6 +19,8 @@ help:
 	@echo "--Post-RED-I Tasks:"
 	@echo ""
 	@echo "\tcprep - Copy reports files from complete runs"
+	@echo "\tmerge - Merge the reports files into JSON for email report"
+	@echo "\temail - Send the reports to target recipient"
 	@echo ""
 
 # Pre RED-I Tasks
@@ -45,3 +47,9 @@ watch:
 # Post RED-I Tasks
 cprep:
 	@bash collect_reports.sh
+
+merge:
+	@bash merge_reports.sh
+
+email:
+	@bash send_email.sh
