@@ -3,4 +3,6 @@
 
 # RED-I Uniq Related Files
 .last_uniq_config
+uniq.ini
+uniq_cron.ini
 test/

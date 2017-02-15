@@ -6,6 +6,7 @@ help:
 	@echo ""
 	@echo "--Pre-RED-I Tasks:"
 	@echo ""
+	@echo "\tconfig - Test a uniq.ini file for a site"
 	@echo "\temr - Get the EMR data (based on a RED-I settings.ini file)"
 	@echo "\tfilter - Filter 'raw.txt' based on a configured rule list"
 	@echo "\tcount - Count lines in 'raw.txt' and compare to per participant files"
@@ -22,6 +23,9 @@ help:
 	@echo ""
 
 # Pre RED-I Tasks
+config:
+	@bash config.sh
+
 emr:
 	@bash get_emr.sh
 
