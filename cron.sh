@@ -26,3 +26,9 @@ echo "y" | bash ${SCRIPT_PATH}/run_redi.sh ${CONFIG_PATH} ${RUN_FLAG}
 
 # This is the post run, report collector
 bash ${SCRIPT_PATH}/collect_reports.sh ${CONFIG_PATH}
+
+# This is the script that collects the reports for the emailer
+bash ${SCRIPT_PATH}/merge_reports.sh ${CONFIG_PATH}
+
+# This is the script that collects the reports for the emailer
+bash ${SCRIPT_PATH}/send_email.sh ${CONFIG_PATH}
