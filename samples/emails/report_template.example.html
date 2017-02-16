@@ -1,16 +1,67 @@
 <html>
-  <head>
-  <title>{{email_title}}</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  </head>
-  <body>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{email_title}}</h3>
-        </div>
-        <div class="panel-body">
-            <div id=\"parsed_data\"></div>
-        </div>
-    </div>
-  </body>
+    <head>
+    <title>_email_title_</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+        <br/>
+        <table  class="table" width="99%">
+            <tr>
+                <td>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">_email_title_</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <th width="20%" class="text-right">Project:</th>
+                                    <td>_project_</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Date:</th>
+                                    <td>_date_</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">REDCap Server:</th>
+                                    <td>_redcap_url_</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Start/End Times:</th>
+                                    <td>From <strong>_start_time_</strong> to <strong>_end_time_</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Duration:</th>
+                                    <td>_duration_</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Summary</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <th width="20%" class="text-right">Total Subjects:</th>
+                                    <td>_total_subjects_</td>
+                                </tr>
+                                _summary_data_
+                            </table>
+                        </div>
+                    </div>
+                    _error_data_
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Subject Details</h3>
+                        </div>
+                        <div class="panel-body">
+                            _subject_details_data_
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
 </html>
