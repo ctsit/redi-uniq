@@ -109,7 +109,7 @@ def run(xml_files_path, xml_files_extension):
             lab_id = subject.find('lab_id').text
 
             if lab_id not in output_data['reports']:
-                output_data['reports'][lab_id] = {'forms': [], 'redcap_id': None, 'errors': []}
+                output_data['reports'][lab_id] = {'forms': {}, 'redcap_id': None, 'errors': []}
 
             output_data['reports'][lab_id]['redcap_id'] = redcap_id
 
@@ -169,8 +169,9 @@ def run(xml_files_path, xml_files_extension):
             forms = subject.find('forms')
             forms = forms.findall('form')
             for form in forms:
-                form_name = form.find('form_name')
-                form_name = form_name.text.replace('Total_', '')
+                form_name = form.find('form_name').text
+                form_name = form_name.replace('Total_', '')
+                form_name = form_name.replace('_Forms', '')
                 form_count = form.find('form_count')
                 form_count = int(form_count.text)
 
@@ -178,7 +179,9 @@ def run(xml_files_path, xml_files_extension):
                     output_data['combined_data']['forms'][form_name] = {'count': 0}
 
                 output_data['combined_data']['forms'][form_name]['count'] += form_count
-                output_data['reports'][lab_id]['forms'].append({'name': form_name, 'count': form_count})
+
+                if form_name not in output_data['reports'][lab_id]['forms']:
+                    output_data['reports'][lab_id]['forms'][form_name] = {'count': form_count}
 
             writeLog('Loading Participant: ' + redcap_id)
             output_data['combined_data']['totals']['count']['total'] += 1
