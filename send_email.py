@@ -4,13 +4,14 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-if len(sys.argv) == 7:
+if len(sys.argv) == 8:
     report_file_path = sys.argv[1]
     to_email = sys.argv[2]
     from_email = sys.argv[3]
     smtp_host = sys.argv[4]
     template_path = sys.argv[5]
     template_type = sys.argv[6]
+    report_stored_path = sys.argv[7]
 else:
     print('6 arguments required: 1 = Path to redi-uniq generate report JSON, 2 = To email address, 3 = From email address, 4 = STMP Host, 5 = Path to email template, 6 = Report content type (html or txt)')
     exit()
@@ -60,7 +61,7 @@ def sendEmail(smtp_host=None, from_email=None, to_email=None, msg=None):
         self.last_error = 'No smtp host, from@, to@, or message defined'
         return False
 
-if report_file_path and to_email and from_email and smtp_host and template_path and template_type:
+if report_file_path and to_email and from_email and smtp_host and template_path and template_type and report_stored_path:
 
     email_data = {
         'addresses': {
@@ -80,7 +81,45 @@ if report_file_path and to_email and from_email and smtp_host and template_path 
 
         summary_data = ''
         for form_key, form_data in report_data['combined_data']['forms'].iteritems():
-            summary_data += '<tr><th class="text-right">' + str(form_key) + '</th><td>' + str(form_data['count']) + '</td></tr>\n'
+            summary_data += '<tr><th class="text-right">' + str(form_key) + '</th>\n<td>' + str(form_data['count']) + '</td>\n</tr>\n'
+
+        subject_details_data = '<label>Number of forms for each of the ' + str(report_data['combined_data']['totals']['count']['total']) + ' subject(s)</label>\n'
+        subject_details_data += '<table class="table table-striped">\n'
+
+        subject_details_data += '<tr><th>Subject ID</th>\n<th>Subject Number</th>\n'
+        for form_key, form_data in report_data['combined_data']['forms'].iteritems():
+            subject_details_data += '<th>' + str(form_key) + '</th>\n'
+        subject_details_data += '</tr>\n'
+
+        for subject_key, subject_data in report_data['reports'].iteritems():
+            subject_details_data += '<tr>\n'
+            subject_details_data += '<td>' + str(subject_key) + '</td>\n'
+            subject_details_data += '<td>' + str(subject_data['redcap_id']) + '</td>\n'
+
+            for form_key, form_data in subject_data['forms'].iteritems():
+                subject_details_data += '<td>' + str(form_data['count']) + '</td>\n'
+
+            subject_details_data += '</tr>\n'
+
+
+        subject_details_data += '</table>\n'
+
+        error_data = ''
+        if len(report_data['combined_data']['errors']) > 0:
+            error_data = '<div class="panel panel-danger">\n'
+            error_data += '<div class="panel-heading">\n'
+            error_data += '<h3 class="panel-title">Errors</h3>\n'
+            error_data += '</div>\n'
+            error_data += '<div class="panel-body">\n'
+
+            error_data += '<table class="table table-striped">\n'
+            error_data += '<tr>\n'
+            for error in report_data['combined_data']['errors']:
+                error_data += '<tr>\n<td>' + str(error) + '</td>\n</tr>\n'
+            error_data += '</tr>\n'
+            error_data += '</table>\n'
+            error_data += '</div>\n'
+            error_data += '</div>\n'
 
     with open(template_path, 'r') as template_file:
         template_data = template_file.read()
@@ -99,11 +138,16 @@ if report_file_path and to_email and from_email and smtp_host and template_path 
             '_end_time_': report_data['combined_data']['performance']['last_run_time'],
             '_duration_': report_data['combined_data']['performance']['total_time'],
             '_total_subjects_': str(report_data['combined_data']['totals']['count']['total']),
-            '_summary_data_': str(summary_data)
+            '_summary_data_': str(summary_data),
+            '_subject_details_data_': str(subject_details_data),
+            '_error_data_': str(error_data)
         }
 
         for replacement_key, replacement_data in replacements.iteritems():
             template_data = template_data.replace(replacement_key, replacement_data)
+
+        with open(report_stored_path, 'w') as email_file:
+            email_file.write(template_data)
 
         msg_data[template_type] = template_data
 
